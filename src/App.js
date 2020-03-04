@@ -1,102 +1,121 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { Nav, Navbar, Button } from "react-bootstrap";
-// import { Navbar, Nav, NavItem, Button } from "react-bootstrap";
-// import { LinkContainer } from "react-router-bootstrap";
-import Routes from "./Routes";
+import React, { useState, useEffect } from "react";
 import "./App.css";
+import axios from "axios";
 
-function App(props) {
+import Header from "./components/Header";
+import Selection from "./components/Selection";
+import Data from "./components/Data";
+
+const App = props => {
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [renderingData, setRenderingData] = useState([]);
+  //
+  const [searchField, setSearchField] = useState({
+    university: { value: "GIST대학", label: "GIST대학" },
+    year: { value: "2020", label: "2020" },
+    semester: { value: "1학기", label: "1학기" },
+    department: [],
+    division: [],
+    type: []
+  });
+  //
+  const [isAPISearched, setIsAPISearched] = useState(false);
+
+  const fetchData = async () => {
+    try {
+      setError(null);
+      setData(null);
+      setLoading(true);
+      const response = await axios.get(
+        "https://xo70baskzb.execute-api.ap-northeast-2.amazonaws.com/dev/api/course?year=2020&semester=SPRING&university=UNDERGRADUATE"
+      );
+      console.log(response.data.courses);
+      setData(response.data.courses);
+    } catch (e) {
+      setError(e);
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    if (isAPISearched) {
+      setSearchField({
+        ...searchField,
+        department: [
+          { value: "GS", label: "기초교육학부" },
+          { value: "PS", label: "물리전공" },
+          { value: "CH", label: "화학전공" },
+          { value: "BS", label: "생명과학전공" },
+          { value: "EC", label: "전기전자컴퓨터전공" },
+          { value: "MC", label: "기계공학전공" },
+          { value: "MA", label: "신소재공학전공" },
+          { value: "EV", label: "지구환경공학전공" },
+          { value: "UC", label: "대학공통" },
+          { value: "MM", label: "수학부전공" },
+          { value: "ET", label: "에너지부전공" },
+          { value: "MD", label: "의생명공학 부전공" },
+          { value: "CT", label: "문화기술 부전공" },
+          { value: "IR", label: "지능로봇 부전공" },
+          {
+            value: "인문학, 사회과학 부전공",
+            label: "인문학, 사회과학 부전공"
+          }
+        ],
+        division: [
+          { value: "교양필수", label: "교양필수" },
+          { value: "교양선택", label: "교양선택" },
+          { value: "기초필수", label: "기초필수" },
+          { value: "기초선택", label: "기초선택" },
+          { value: "자유선택", label: "자유선택" },
+          { value: "연구", label: "연구" },
+          { value: "전공필수", label: "전공필수" },
+          { value: "전공선택", label: "전공선택" }
+        ],
+        type: [
+          { value: "교과", label: "교과" },
+          { value: "논문연구", label: "논문연구" },
+          { value: "개별연구", label: "개별연구" },
+          { value: "세미나", label: "세미나" }
+        ]
+      });
+    }
+  }, [isAPISearched]);
+
+  const filteringSelction = (filteringData, filteringKey) => {
+    return filteringData.filter((data, index) =>
+      searchField[filteringKey]
+        .map(value => value.value)
+        .includes(data[filteringKey])
+    );
+  };
+
+  useEffect(() => {
+    console.log(searchField);
+    setRenderingData(
+      filteringSelction(filteringSelction(data, "department"), "type")
+    );
+  }, [searchField]);
+
   return (
-    <div className="App container">
-      <Navbar fluid collapseOnSelect>
-        <Navbar.Header>
-          <Navbar.Brand>
-            <Link to="/">수강심청이</Link>
-          </Navbar.Brand>
-          <Navbar.Toggle />
-        </Navbar.Header>
-        <Navbar.Collapse>
-          <Nav pullRight>
-            {/* <LinkContainer to="/signup">
-              <NavItem>Sign Up</NavItem>
-            </LinkContainer> */}
-            {/* <LinkContainer to="/login">
-              <NavItem>Login</NavItem>
-            </LinkContainer> */}
-          </Nav>
-        </Navbar.Collapse>
-      </Navbar>
-      <Navbar>
-        <label for="college">대학분류</label>
-        <select name="college" id="college">
-          <option value="GIST대학">GIST대학</option>
-        </select>
-        <label for="major">개설부서</label>
-        <select name="major" id="major">
-          <option value="-전체-">-전체-</option>
-          <option value="기초교육학부">기초교육학부</option>
-          <option value="물리전공">물리전공</option>
-          <option value="화학전공">화학전공</option>
-          <option value="생명과학전공">생명과학전공</option>
-          <option value="전기전자컴퓨터전공">전기전자컴퓨터전공</option>
-          <option value="기계공학전공">기계공학전공</option>
-          <option value="신소재공학전공">신소재공학전공</option>
-          <option value="지구환경공학전공">지구환경공학전공</option>
-          <option value="대학공통">대학공통</option>
-          <option value="수학부전공">수학부전공</option>
-          <option value="에너지부전공">에너지부전공</option>
-          <option value="의생명공학 부전공">의생명공학 부전공</option>
-          <option value="문화기술 부전공">문화기술 부전공</option>
-          <option value="지능로봇 부전공">지능로봇 부전공</option>
-          <option value="인문학, 사회과학 부전공">
-            인문학, 사회과학 부전공
-          </option>
-          <option value="언어교육센터">언어교육센터</option>
-          <option value="SW교육센터">SW교육센터</option>
-        </select>
-        <label for="semester">년도/학기</label>
-        <input className="year" placeholder="연도" value="2020"></input>
-        <select name="semester" id="semester">
-          <option value="1학기">1학기</option>
-          {/* <option value="여름학기">여름학기</option>
-          <option value="2학기">2학기</option>
-          <option value="겨울학기">겨울학기</option> */}
-        </select>
-        <Button variant="outline-secondary" className="search-button">
-          검색
-        </Button>
-        <label for="required">이수구분</label>
-        <select name="required" className="required" id="required">
-          <option value="-전체-">-전체-</option>
-          <option value="교양필수">교양필수</option>
-          <option value="교양선택">교양선택</option>
-          <option value="기초필수">기초필수</option>
-          <option value="기초선택">기초선택</option>
-          <option value="전공필수">전공필수</option>
-          <option value="전공선택">전공선택</option>
-          <option value="연구">연구</option>
-          <option value="자유선택">자유선택</option>
-        </select>
-        <label for="research">교과연구</label>
-        <select name="research" id="research">
-          <option value="-전체-">-전체-</option>
-          <option value="교과">교과</option>
-          <option value="논문연구">논문연구</option>
-          <option value="개별연구">개별연구</option>
-          <option value="세미나">세미나</option>
-        </select>
-        <label for="type">과정구분</label>
-        <select name="type" id="type">
-          <option value="-전체-">-전체-</option>
-          <option value="학사">학사</option>
-        </select>
-        <label for="nameofsubject">교과목명</label>
-        <input className="nameofsubject"></input>
-      </Navbar>
-      <Routes />
+    <div className="App">
+      <Header />
+      <Selection
+        searchField={searchField}
+        setSearchField={setSearchField}
+        isAPISearched={isAPISearched}
+        setIsAPISearched={setIsAPISearched}
+      />
+      {isAPISearched && (
+        <Data data={renderingData} loading={loading} error={error} />
+      )}
     </div>
   );
-}
+};
 
 export default App;
