@@ -1,26 +1,24 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 import axios from "axios";
-
 import Header from "./components/Header";
 import Selection from "./components/Selection";
 import Data from "./components/Data";
 
-const App = props => {
+const App = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [renderingData, setRenderingData] = useState([]);
-  //
+  const [inputSubject, setInputSubject] = useState("");
   const [searchField, setSearchField] = useState({
     university: { value: "GIST대학", label: "GIST대학" },
     year: { value: "2020", label: "2020" },
     semester: { value: "1학기", label: "1학기" },
     department: [],
     division: [],
-    type: []
+    type: [],
   });
-  //
   const [isAPISearched, setIsAPISearched] = useState(false);
 
   const fetchData = async () => {
@@ -31,7 +29,7 @@ const App = props => {
       const response = await axios.get(
         "https://xo70baskzb.execute-api.ap-northeast-2.amazonaws.com/dev/api/course?year=2020&semester=SPRING&university=UNDERGRADUATE"
       );
-      console.log(response.data.courses);
+      // console.log(response.data.courses);
       setData(response.data.courses);
     } catch (e) {
       setError(e);
@@ -49,23 +47,23 @@ const App = props => {
         ...searchField,
         department: [
           { value: "GS", label: "기초교육학부" },
-          { value: "PS", label: "물리전공" },
-          { value: "CH", label: "화학전공" },
-          { value: "BS", label: "생명과학전공" },
-          { value: "EC", label: "전기전자컴퓨터전공" },
-          { value: "MC", label: "기계공학전공" },
-          { value: "MA", label: "신소재공학전공" },
-          { value: "EV", label: "지구환경공학전공" },
-          { value: "UC", label: "대학공통" },
-          { value: "MM", label: "수학부전공" },
-          { value: "ET", label: "에너지부전공" },
-          { value: "MD", label: "의생명공학 부전공" },
-          { value: "CT", label: "문화기술 부전공" },
-          { value: "IR", label: "지능로봇 부전공" },
-          {
-            value: "인문학, 사회과학 부전공",
-            label: "인문학, 사회과학 부전공"
-          }
+          // { value: "PS", label: "물리전공" },
+          // { value: "CH", label: "화학전공" },
+          // { value: "BS", label: "생명과학전공" },
+          // { value: "EC", label: "전기전자컴퓨터전공" },
+          // { value: "MC", label: "기계공학전공" },
+          // { value: "MA", label: "신소재공학전공" },
+          // { value: "EV", label: "지구환경공학전공" },
+          // { value: "UC", label: "대학공통" },
+          // { value: "MM", label: "수학부전공" },
+          // { value: "ET", label: "에너지부전공" },
+          // { value: "MD", label: "의생명공학 부전공" },
+          // { value: "CT", label: "문화기술 부전공" },
+          // { value: "IR", label: "지능로봇 부전공" },
+          // {
+          //   value: "인문학, 사회과학 부전공",
+          //   label: "인문학, 사회과학 부전공",
+          // },
         ],
         division: [
           { value: "교양필수", label: "교양필수" },
@@ -75,41 +73,49 @@ const App = props => {
           { value: "자유선택", label: "자유선택" },
           { value: "연구", label: "연구" },
           { value: "전공필수", label: "전공필수" },
-          { value: "전공선택", label: "전공선택" }
+          { value: "전공선택", label: "전공선택" },
         ],
         type: [
           { value: "교과", label: "교과" },
           { value: "논문연구", label: "논문연구" },
           { value: "개별연구", label: "개별연구" },
-          { value: "세미나", label: "세미나" }
-        ]
+          { value: "세미나", label: "세미나" },
+        ],
       });
-    }
+    } // eslint-disable-next-line
   }, [isAPISearched]);
 
-  const filteringSelction = (filteringData, filteringKey) => {
-    return filteringData.filter((data, index) =>
+  const filteringSelection = (filteringData, filteringKey) => {
+    const filteredByKey = filteringData.filter((data, index) =>
       searchField[filteringKey]
-        .map(value => value.value)
+        .map((value) => value.value)
         .includes(data[filteringKey])
     );
+    return filteredByKey;
   };
 
   useEffect(() => {
-    console.log(searchField);
-    setRenderingData(
-      filteringSelction(filteringSelction(data, "department"), "type")
-    );
-  }, [searchField]);
+    setTimeout(() => {
+      setRenderingData(
+        filteringSelection(
+          filteringSelection(data, "department"),
+          "type"
+        ).filter((course) => course.name.indexOf(inputSubject) !== -1)
+      );
+    }, 200);
+    // eslint-disable-next-line
+  }, [searchField, inputSubject]);
 
   return (
     <div className="App">
-      <Header />
+      {/* <Header /> */}
       <Selection
         searchField={searchField}
         setSearchField={setSearchField}
         isAPISearched={isAPISearched}
         setIsAPISearched={setIsAPISearched}
+        setInputSubject={setInputSubject}
+        data={renderingData}
       />
       {isAPISearched && (
         <Data data={renderingData} loading={loading} error={error} />

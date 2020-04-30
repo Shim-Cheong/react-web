@@ -1,6 +1,6 @@
 .App {
   margin-top: 15px;
-  margin-left : 5%;
+  margin-left: 5%;
   margin-right: 5%;
 }
 
@@ -16,31 +16,4 @@ select {
   margin-top: 10px;
   margin-left: 10px;
   margin-right: 40px;
-}
-
-.year {
-  display: inline-block;
-  width: 80px;
-  height: 25px;
-  margin-left: 10px;
-  margin-right: 10px;
-}
-
-.required {
-  display: inline-block;
-  margin-bottom: 10px;
-  margin-left: 10px;
-}
-
-.search-button {
-  display: inline-block;
-  margin-left: 230px;
-}
-
-.nameofsubject {
-  display: inline-block;
-  width: 200px;
-  height: 25px;
-  margin-left: 10px;
-  margin-right: 10px;
 }

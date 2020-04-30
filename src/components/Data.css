@@ -1,4 +1,14 @@
-.table {
-  display: inline-block;
-  width: 1170px;
+table {
+  font-size: 90%;
+}
+
+table td {
+  vertical-align: middle !important;
+}
+
+.table-wrapper {
+  height: 65vh;
+  margin-bottom: 40px;
+  border: 1px solid #e7e7e7;
+  overflow-y: scroll;
 }
