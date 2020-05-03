@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 import axios from "axios";
-import Header from "./components/Header";
+// import Header from "./components/Header";
 import Selection from "./components/Selection";
 import Data from "./components/Data";
 
@@ -82,7 +82,8 @@ const App = () => {
           { value: "세미나", label: "세미나" },
         ],
       });
-    } // eslint-disable-next-line
+    }
+    // eslint-disable-next-line
   }, [isAPISearched]);
 
   const filteringSelection = (filteringData, filteringKey) => {
@@ -94,15 +95,37 @@ const App = () => {
     return filteredByKey;
   };
 
+  // useEffect(() => {
+  //   setIsChecked(
+  //     renderingData.map((course, index) =>
+  //       true ? { ...course, checked: true } : course
+  //     )
+  //   );
+  // }, [renderingData]);
+
+  // console.log(isChecked);
+
+  const onToggle = (id) => {
+    setRenderingData(
+      renderingData.map((course) =>
+        course.id === id ? { ...course, checked: !course.checked } : course
+      )
+    );
+  };
+
   useEffect(() => {
-    setTimeout(() => {
-      setRenderingData(
-        filteringSelection(
-          filteringSelection(data, "department"),
-          "type"
-        ).filter((course) => course.name.indexOf(inputSubject) !== -1)
-      );
-    }, 200);
+    const index = filteringSelection(
+      filteringSelection(data, "department"),
+      "type"
+    ).filter((course) => course.name.indexOf(inputSubject) !== -1);
+
+    // setTimeout(() => {
+    setRenderingData(
+      index.map((course, index) =>
+        true ? { ...course, checked: false, id: index + 1 } : course
+      )
+    );
+    // }, 300);
     // eslint-disable-next-line
   }, [searchField, inputSubject]);
 
@@ -118,7 +141,12 @@ const App = () => {
         data={renderingData}
       />
       {isAPISearched && (
-        <Data data={renderingData} loading={loading} error={error} />
+        <Data
+          data={renderingData}
+          loading={loading}
+          error={error}
+          onToggle={onToggle}
+        />
       )}
     </div>
   );

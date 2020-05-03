@@ -1,19 +1,19 @@
-import React, { useState } from "react";
+import React from "react";
 import "./Data.css";
 import { Table } from "react-bootstrap";
 
-function Data({ data, loading, error }) {
+function Data({ data, loading, error, onToggle }) {
   // if (loading) return <div>로딩중..</div>;
   // if (error) return <div>에러가 발생했습니다</div>;
   // if (!data) return null;
 
-  const idAddedData = data.map((course, index) =>
-    true ? { ...course, id: index + 1 } : course
-  );
+  // const idAddedData = data.map((course, index) =>
+  //   true ? { ...course, id: index + 1 } : course
+  // );
 
   // console.log(idAddedData);
 
-  const [testdata, settestdata] = useState(idAddedData);
+  // const [testdata, settestdata] = useState(idAddedData);
 
   function TypeOfDepartment(department) {
     let ref;
@@ -67,10 +67,11 @@ function Data({ data, loading, error }) {
     return ref;
   }
 
-  function test(course, index) {
-    console.log(course.id);
-    console.log(index + 1);
-  }
+  // function test(course, index) {
+  //   console.log(course);
+  //   console.log(course.id);
+  //   console.log(index + 1);
+  // }
 
   return (
     <div className="table-wrapper">
@@ -91,7 +92,7 @@ function Data({ data, loading, error }) {
           </tr>
         </thead>
         <tbody>
-          {idAddedData.map((course, index) => (
+          {data.map((course, index) => (
             <tr key={index}>
               <td>{index + 1}</td>
               <td>{TypeOfDepartment(course.department)}</td>
@@ -116,7 +117,9 @@ function Data({ data, loading, error }) {
                 ))}
               </td>
               <td>
-                <div onClick={() => test(course, index)}></div>
+                <div onClick={() => onToggle(course.id)}>
+                  {course.checked ? <div>true</div> : <div>false</div>}
+                </div>
               </td>
             </tr>
           ))}

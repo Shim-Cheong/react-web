@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import "./AutoComplete.css";
 
 const AutoComplete = ({ suggestions, setInputSubject }) => {
@@ -7,16 +7,21 @@ const AutoComplete = ({ suggestions, setInputSubject }) => {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [userInput, setUserInput] = useState("");
 
+  const inputRef = useRef();
+
   const onChange = (e) => {
     const userInput = e.currentTarget.value;
     const newFilteredSuggestions = suggestions.filter(
       (suggestion) =>
         suggestion.toLowerCase().indexOf(userInput.toLowerCase()) > -1
     );
+    const singleFilteredSuggestion = Array.from(
+      new Set(newFilteredSuggestions)
+    );
 
     setInputSubject(userInput);
     setActiveSuggestion(0);
-    setFilteredSuggestions(newFilteredSuggestions);
+    setFilteredSuggestions(singleFilteredSuggestion);
     setShowSuggestions(true);
     setUserInput(e.currentTarget.value);
   };
@@ -26,6 +31,7 @@ const AutoComplete = ({ suggestions, setInputSubject }) => {
     setFilteredSuggestions([]);
     setShowSuggestions(false);
     setUserInput(e.currentTarget.innerText);
+    inputRef.current.focus();
   };
 
   const onKeyDown = (e) => {
@@ -84,6 +90,7 @@ const AutoComplete = ({ suggestions, setInputSubject }) => {
         onChange={(e) => onChange(e)}
         onKeyDown={(e) => onKeyDown(e)}
         value={userInput}
+        ref={inputRef}
       />
       {suggestionsListComponent}
       {/* <button>과목 검색</button> */}
