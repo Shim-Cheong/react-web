@@ -7,71 +7,26 @@ function Data({ data, loading, error, onToggle }) {
   // if (error) return <div>에러가 발생했습니다</div>;
   // if (!data) return null;
 
-  // const idAddedData = data.map((course, index) =>
-  //   true ? { ...course, id: index + 1 } : course
-  // );
-
-  // console.log(idAddedData);
-
-  // const [testdata, settestdata] = useState(idAddedData);
-
   function TypeOfDepartment(department) {
-    let ref;
+    const typeOfDepartment = {
+      BS: "생명과학전공",
+      CH: "화학전공",
+      CT: "문화기술 부전공",
+      EC: "전기전자컴퓨터전공",
+      ET: "에너지부전공",
+      EV: "지구환경공학전공",
+      GS: "기초교육학부",
+      IR: "지능로봇 부전공",
+      MA: "신소재공학전공",
+      MC: "기계공학전공",
+      MD: "의생명공학 부전공",
+      MM: "수학부전공",
+      PS: "물리전공",
+      UC: "대학공통",
+    };
 
-    switch (department) {
-      case "BS":
-        ref = "생명과학전공";
-        break;
-      case "CH":
-        ref = "화학전공";
-        break;
-      case "CT":
-        ref = "문화기술 부전공";
-        break;
-      case "EC":
-        ref = "전기전자컴퓨터전공";
-        break;
-      case "ET":
-        ref = "에너지부전공";
-        break;
-      case "EV":
-        ref = "지구환경공학전공";
-        break;
-      case "GS":
-        ref = "기초교육학부";
-        break;
-      case "IR":
-        ref = "지능로봇 부전공";
-        break;
-      case "MA":
-        ref = "신소재공학전공";
-        break;
-      case "MC":
-        ref = "기계공학전공";
-        break;
-      case "MD":
-        ref = "의생명공학 부전공";
-        break;
-      case "MM":
-        ref = "수학부전공";
-        break;
-      case "PS":
-        ref = "물리전공";
-        break;
-      case "UC":
-        ref = "대학공통";
-        break;
-      default:
-        ref = "";
-    }
-    return ref;
+    return typeOfDepartment[department] || "";
   }
-
-  // function test(course, index) {
-  //   console.log(course);
-  //   console.log(course.id);
-  //   console.log(index + 1);
-  // }
 
   return (
     <div className="table-wrapper">
@@ -117,7 +72,7 @@ function Data({ data, loading, error, onToggle }) {
                 ))}
               </td>
               <td>
-                <div onClick={() => onToggle(course.id)}>
+                <div onClick={() => onToggle(course)}>
                   {course.checked ? <div>true</div> : <div>false</div>}
                 </div>
               </td>

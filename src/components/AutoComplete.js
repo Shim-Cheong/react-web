@@ -77,7 +77,7 @@ const AutoComplete = ({ suggestions, setInputSubject }) => {
     } else {
       suggestionsListComponent = (
         <div className="no-suggestions">
-          <em>데이터가 없습니다.</em>
+          {/* <em>데이터가 없습니다.</em> */}
         </div>
       );
     }

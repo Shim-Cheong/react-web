@@ -95,22 +95,35 @@ const App = () => {
     return filteredByKey;
   };
 
-  // useEffect(() => {
-  //   setIsChecked(
-  //     renderingData.map((course, index) =>
-  //       true ? { ...course, checked: true } : course
-  //     )
-  //   );
-  // }, [renderingData]);
+  const [selectedCourse, setSelectedCourse] = useState([]);
 
-  // console.log(isChecked);
+  useEffect(() => {
+    console.log(selectedCourse);
+  }, [selectedCourse]);
 
-  const onToggle = (id) => {
+  const onToggle = (course) => {
+    const Id = course.id;
     setRenderingData(
       renderingData.map((course) =>
-        course.id === id ? { ...course, checked: !course.checked } : course
+        course.id === Id ? { ...course, checked: !course.checked } : course
       )
     );
+
+    const name = course.name;
+    const department = course.department;
+    const code = course.code;
+    const classNumber = course.classNumber;
+    const simpleCourse = `${name} ${department}${code}-${classNumber}`;
+    if (!course.checked) {
+      setSelectedCourse([...selectedCourse, simpleCourse]);
+    }
+    if (selectedCourse.indexOf(simpleCourse) !== -1) {
+      setSelectedCourse(
+        selectedCourse.filter(
+          (selectedCourse) => selectedCourse !== simpleCourse
+        )
+      );
+    }
   };
 
   useEffect(() => {
@@ -132,6 +145,7 @@ const App = () => {
   return (
     <div className="App">
       {/* <Header /> */}
+      <div>{selectedCourse}</div>
       <Selection
         searchField={searchField}
         setSearchField={setSearchField}

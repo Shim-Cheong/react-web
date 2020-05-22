@@ -1,17 +1,28 @@
 .select-wrapper {
   display: flex;
+  width: 90%;
+  max-height: 100%;
   justify-content: space-between;
-  margin-bottom: 5px;
+  align-items: center;
+  margin: 0 auto;
+  padding: 3px 0;
+}
+
+.NavBar {
+  border-radius: 4px;
+  background-color: #f8f8f8;
+  border: 1px solid #e7e7e7;
+  padding: 4px;
+  margin: 20px 0;
+  max-height: 91px;
 }
 
 .college-wrapper {
   width: 40%;
-  padding: 10px 0;
 }
 
 .year-wrapper {
   width: 40%;
-  padding: 10px 0;
 }
 
 .select-year-flex {
@@ -29,14 +40,16 @@
 .search-button {
   width: 100px;
   height: 70%;
-  margin-top: 3em;
-  margin-right: 1.5%;
+  margin-top: 1em;
 }
 
 .department-wrapper {
   display: flex;
   justify-content: space-between;
-  margin: 10px 0;
+  align-items: center;
+  margin: 0 auto;
+  width: 90%;
+  max-height: 100%;
 }
 
 .select-department {
@@ -49,7 +62,7 @@
 } */
 
 .type {
-  max-width: 40%;
+  max-width: 45%;
 }
 
 .subject-name {

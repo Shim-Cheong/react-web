@@ -1,5 +1,5 @@
 import React from "react";
-import { Navbar, Button } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import "./Selection.css";
@@ -11,7 +11,6 @@ const animatedComponents = makeAnimated();
 const colourStyles = {
   control: (styles) => ({ ...styles, backgroundColor: "white" }),
   option: (styles, { data, isDisabled, isFocused, isSelected }) => {
-    // console.log(data.color);
     const color = chroma(data.color);
     return {
       ...styles,
@@ -132,7 +131,7 @@ const Selection = ({
 
   return (
     <>
-      <Navbar>
+      <div className="NavBar">
         <div className="select-wrapper">
           <div className="college-wrapper">
             <label htmlFor="college">대학분류</label>
@@ -183,10 +182,10 @@ const Selection = ({
             검색
           </Button>
         </div>
-      </Navbar>
+      </div>
 
       {isAPISearched && (
-        <Navbar>
+        <div className="NavBar">
           <div className="department-wrapper">
             <div className="select-department">
               <label htmlFor="department">학과</label>
@@ -235,7 +234,7 @@ const Selection = ({
               />
             </div>
           </div>
-        </Navbar>
+        </div>
       )}
     </>
   );

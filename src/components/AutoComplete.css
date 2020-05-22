@@ -3,8 +3,9 @@ input {
   padding: 0.5rem;
   width: 200px;
   height: 34px;
+  width: 100%;
 }
-
+/* 
 .no-suggestions {
   color: #999;
   margin: 0.5rem;
@@ -20,7 +21,7 @@ input {
   max-height: 143px;
   overflow-y: auto;
   padding-left: 0;
-  /* width: calc(300px + 1rem); */
+  width: calc(300px + 1rem);
   width: 200px;
   background-color: white;
 }
@@ -37,9 +38,4 @@ input {
 
 .suggestions li:not(:last-of-type) {
   border-bottom: 1px solid #999;
-}
-
-/* .subject-search-wrapper {
-  display: flex;
-  width: 250px;
 } */
